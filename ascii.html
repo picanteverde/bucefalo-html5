@@ -1,0 +1,114 @@
+<head>
+<style>
+#ascii{
+	font-family: monospace;
+	font-size: 11px;
+	line-height: 70%;
+}
+video {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ccc;
+}
+canvas{
+	height: 240px;
+	width: 320px
+}
+</style>
+</head>
+<span id="switch">start</span>
+<video autoplay height="240" width="320"></video>
+<canvas height="120" width="160"></canvas>
+<pre id="ascii"></pre>
+<script>
+window.URL = window.URL || window.webkitURL;
+navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                          navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+  var onFailSoHard = function(e) {
+    console.log('Reeeejected!', e);
+  };
+	var video = document.querySelector('video');
+	var canvas = document.querySelector('canvas');
+	var ctx = canvas.getContext('2d');
+	var localMediaStream = null;
+	var interval;
+
+
+function snapshot() {
+  if (localMediaStream) {
+    ctx.drawImage(video, 0, 0, 160, 120);
+	var pixels = ctx.getImageData(0,0,160,120);
+	var colordata = pixels.data;
+	var ascii = document.getElementById("ascii");
+	ascii.innerHTML= '';
+	var line ="";
+	for(var i = 0; i < colordata.length; i = i+4)
+	{
+		r = colordata[i];
+		g = colordata[i+1];
+		b = colordata[i+2];
+		//converting the pixel into grayscale
+		gray = r*0.2126 + g*0.7152 + b*0.0722;
+		//overwriting the colordata array with grayscale values
+		//colordata[i] = colordata[i+1] = colordata[i+2] = gray;
+		
+		//text for ascii art.
+		//blackish = dense characters like "W", "@"
+		//whitish = light characters like "`", "."
+		if(gray > 250) character = " "; //almost white
+		else if(gray > 240) character = "`";
+		else if(gray > 220) character = ".";
+		else if(gray > 200) character = ":";
+		else if(gray > 180) character = "i";
+		else if(gray > 160) character = "l";
+		else if(gray > 140) character = "+";
+		else if(gray > 120) character = "*";
+		else if(gray > 100) character = "P";
+		else if(gray > 80) character = "B";
+		else if(gray > 40) character = "#";
+		else if(gray > 20) character = "W";
+		else character = "@"; //almost black
+		
+		//newlines and injection into dom
+		if(i != 0 && (i/4)%160 == 0) //if the pointer reaches end of pixel-line
+		{
+			ascii.appendChild(document.createTextNode(line));
+			//newline
+			ascii.appendChild(document.createElement("br"));
+			//emptying line for the next row of pixels.
+			line = "";
+		}
+		
+		line += character;
+	}
+
+  }
+}
+function start (){
+	navigator.getUserMedia({video: true}, function(stream) {
+	  video.src = window.URL.createObjectURL(stream);
+	  localMediaStream = stream;
+	}, onFailSoHard);
+	interval = setInterval(snapshot, 100);	
+}
+
+function stop(){
+	clearInterval(interval);
+	localMediaStream.stop();
+}
+var playing =false;
+var sw = document.querySelector("span#switch");
+sw.onclick = function(){
+	if(playing){
+		stop();
+		playing=false;
+		sw.innerHTML = "play";
+	}else{
+		start();
+		playing = true;
+		sw.innerHTML = "stop";
+	}
+}
+
+
+</script>
