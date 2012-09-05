@@ -1,0 +1,16 @@
+{
+  "name": "bucefalo-html5",
+  "title": "Bucefalo HTML5",
+  "description": "Bucefalo experiments and libraries for HTML5",
+  "version": "0.1.0",
+  "homepage": "",
+  "author": {
+    "name": "Alejandro Hernández"
+  },
+  "dependencies": {
+      "connect": ">= 1.8.5",
+      "express": ">= 2.5.4",
+      "node-static": ">= 0.5.9"
+  },
+  "keywords": []
+}
