@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>First</title>
+         
+        <style>/* Removes Mobile Highlight */ *{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}</style>
+ 
+        <script src="../libs/easeljs-0.5.0.min.js"></script>
+        <script src="../libs/tweenjs-0.3.0.min.js"></script>
+        <script src="../libs/soundjs-0.3.0.min.js"></script>
+        <script src="../libs/preloadjs-0.2.0.min.js"></script>
+        <script src="../libs/movieclip-0.5.0.min.js"></script>
+    </head>
+    <body>
+        <canvas id="stage" width="960" height="320"></canvas>
+        <script>
+var canvas = document.getElementById("stage");
+
+// create a stage object to work with the canvas. This is the top level node in the display list:
+var stage = new createjs.Stage(canvas);
+
+// Create a new Text object:
+var text = new createjs.Text("Hello World!", "36px Arial", "#777");
+
+// add the text as a child of the stage. This means it will be drawn any time the stage is updated
+// and that it's transformations will be relative to the stage coordinates:
+stage.addChild(text);
+
+// position the text on screen, relative to the stage coordinates:
+text.x = 360;
+text.y = 200;
+
+// call update on the stage to make it render the current display list to the canvas:
+stage.update();
+
+
+        </script>
+    </body>
+</html>

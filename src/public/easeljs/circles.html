@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Circles</title>
+         
+        <style>/* Removes Mobile Highlight */ *{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}</style>
+ 
+        <script src="../libs/easeljs-0.5.0.min.js"></script>
+        <script src="../libs/tweenjs-0.3.0.min.js"></script>
+        <script src="../libs/soundjs-0.3.0.min.js"></script>
+        <script src="../libs/preloadjs-0.2.0.min.js"></script>
+        <script src="../libs/movieclip-0.5.0.min.js"></script>
+    </head>
+    <body>
+        <canvas id="stage" width="960" height="320"></canvas>
+        <script>
+
+function drawCircle(radius, color, linecolor) {
+    var s = new createjs.Shape();
+    var g = s.graphics;
+
+    g.setStrokeStyle(15, 'round', 'round');
+    g.beginStroke(linecolor);
+    g.beginFill(color);
+    g.drawCircle(radius, radius, radius); //x,y,radius
+    g.endFill();
+    return s;
+}
+var canvas = document.getElementById("stage");
+
+// create a stage object to work with the canvas. This is the top level node in the display list:
+var stage = new createjs.Stage(canvas);
+
+var circle1 = drawCircle(40,'#FF0000','#000000');
+stage.addChild(circle1);
+
+var circle2 = drawCircle(20,'#FF0000','#000000');
+stage.addChild(circle2);
+
+var circle3 = drawCircle(30,'#FF0000','#000000');
+stage.addChild(circle3);
+
+circle1.x = 60;
+circle1.y = 60;
+
+circle2.x = 120;
+circle2.y = 60;
+
+circle3.x = 80;
+circle3.y = 120;
+
+// call update on the stage to make it render the current display list to the canvas:
+stage.update();
+
+
+        </script>
+    </body>
+</html>
