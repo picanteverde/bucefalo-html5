@@ -114,7 +114,7 @@ function createBall(){
     g.setStrokeStyle(0, 'round', 'round');
     g.beginStroke('#000');
     g.beginFill('#00FF00');
-    g.drawCircle(30, 30, 30); 
+    g.drawCircle(15, 15, 15); 
     g.endFill();
     return s;
 }
@@ -219,11 +219,11 @@ function update()
     // Cpu Movement
      
     if(cpu.y < ball.y) {
-        cpu.y = cpu.y + 4;
+        cpu.y = cpu.y + cpuSpeed;
     }
     else if(cpu.y > ball.y) {
-        cpu.y = cpu.y - 4;
-    }
+        cpu.y = cpu.y - cpuSpeed;
+    } 
      
     // Wall Collision 
  
@@ -249,12 +249,19 @@ function update()
     }
      
     /* Cpu collision */
-     
-    if(ball.x + 30 >= cpu.x && ball.x + 30 < cpu.x + 22 && ball.y >= cpu.y && ball.y < cpu.y + 75)
+    if(ball.x + 30 >= cpu.x && ball.x + 30 < cpu.x + 22){
+        console.log('hit in x')
+    }
+    if(ball.y >= cpu.y && ball.y < cpu.y + 75){
+        console.log('hit in y')
+    }
+     console.log('ball.x + 30 =' + (ball.x + 30) + ' cpu.x =' +cpu.x + ' cpu.x + 22 = ' + (cpu.x +22) + ' ball.y =' +ball.y + ' cpu.y = ' + cpu.y + ' cpu.y + 75 =' + (cpu.y +75) );
+    if((ball.x + 30) >= cpu.x && (ball.x + 30) < (cpu.x + 22) && ball.y +15 >= cpu.y && ball.y < cpu.y + 75)
     {
+        console.log('hit cpu');
         xSpeed *= -1;
     }
-     
+    
     /* Player collision */
      
     if(ball.x <= player.x + 22 && ball.x > player.x && ball.y >= player.y && ball.y < player.y + 75)
