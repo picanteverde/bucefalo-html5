@@ -26,7 +26,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('update',function(msg){
-		players[msg.id] = { x: msg.x, y: msg.y, z: msg.z };
+		players[msg.id] = { x: msg.x, y: msg.y, z: msg.z, a:msg.a, b:msg.b, g:msg.g };
 		//console.log("player " + msg.id + " x:" + msg.x + " y:" +msg.y + " z:" +msg.z);
 	});
 

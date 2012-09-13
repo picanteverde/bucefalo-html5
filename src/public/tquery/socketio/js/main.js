@@ -30,19 +30,23 @@ var socket = io.connect();
 socket.emit('newScreen', { my: 'data' });
 setInterval(function(){
 	socket.emit('screenReady',{});
-},50);
-var players = {};
+},200);
+var players = {}, old_players={};
 socket.on('positions', function (data) {
-	var i=0;
+	var i=0,p,d,old;
 	for(player in data){
 		i++;
+		d = data[player];
 		if (!players[player]){
-			players[player] = tQuery.createSphere(new THREE.MeshLambertMaterial(
+			players[player] = tQuery.createCube(new THREE.MeshLambertMaterial(
 			{
 				color: 0xCC0000
-			})).addTo(world);
+			})).scale(4,2,1).addTo(world);
 		}
+		p = players[player];
+
 		players[player].position(data[player].x, data[player].y, data[player].z);
 	}
+	old_players =data;
 	//console.log('positions ' + i);
 });
