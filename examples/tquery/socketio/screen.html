@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)http://learningthreejs.com/data/2012-05-15-punch-a-doom-character-in-augmented-reality/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Screen</title>
+<script src="js/tquery-bundle.js"></script>
+<script src="js/tquery.checkerboard.js"></script>
+<script src="js/tquery.world.createfog.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+document.addEventListener('keydown', function(event){
+    // if it is keydown on a arrow, prevent default
+    if( event.keyCode >= 37 && event.keyCode <= 40 ){
+        event.preventDefault();
+    }
+}, true);
+</script>
+</head>
+<body style="margin: 0px; padding: 0px; overflow: hidden; ">
+<script src="js/main.js"></script>
+</body>
+</html>
