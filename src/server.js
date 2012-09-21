@@ -25,8 +25,20 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('positions', players);
 	});
 
+	socket.on('debug', function(msg){
+		if(players[msg.id]){
+			players[msg.id].debug = socket;
+			console.log('debuging: ' + msg.id);
+		}
+	});
+
 	socket.on('update',function(msg){
-		players[msg.id] = { x: msg.x, y: msg.y, z: msg.z, a:msg.a, b:msg.b, g:msg.g };
+		var data = { x: msg.x, y: msg.y, z: msg.z, a:msg.a, b:msg.b, g:msg.g, px:msg.px, py: msg.py, pz:msg.pz };
+		if(players[msg.id] && players[msg.id].debug){
+			players[msg.id].debug.emit('debug-data', data);
+			data.debug = players[msg.id].debug;
+		}
+		players[msg.id] = data;
 		//console.log("player " + msg.id + " x:" + msg.x + " y:" +msg.y + " z:" +msg.z);
 	});
 
@@ -41,5 +53,15 @@ io.sockets.on('connection', function (socket) {
 
 
 });
+
+setInterval(function(){
+	var p, i = 0;
+	console.log("controllers: ");
+	for(p in players){
+		i++
+		console.log(p);
+	}
+	console.log("Total: "+ i);
+},2000);
 
 util.puts("node static on port: " + port)

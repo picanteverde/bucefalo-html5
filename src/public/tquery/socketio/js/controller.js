@@ -1,20 +1,44 @@
+window.performance = window.performance || {};
+performance.now = (function() {
+  return performance.now       ||
+         performance.mozNow    ||
+         performance.msNow     ||
+         performance.oNow      ||
+         performance.webkitNow ||
+         function() { return new Date().getTime(); };
+})();
+
+
 var socket = io.connect(),
-	sensitivity = 0.4,
+	sensitivity = 0.001,
 	ax,ay, az,
-	al,be,ga,ab,
-	id =Math.random();
-//socket.emit('my other event',{hello:"world"});
+	al,be,ga,
+	px = 0, py = 0, pz = 0, t = performance.now(),
+	id = Math.random();
+
+if(location.search){
+	id = location.search.split("=")[1];
+}
 // Lock screen
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('touchmove', function (e) { 
+	e.preventDefault(); 
+}, false);
 
 
 window.addEventListener('devicemotion', function (e) {
 	//ax = e.accelerationIncludingGravity.x ;
 	//ay = -e.accelerationIncludingGravity.y;
 	//az = -e.accelerationIncludingGravity.z;
+	var time = (performance.now() - t);
+	time = time *time;
 	ax = e.acceleration.x;
-	ay = -e.acceleration.y;
-	az = -e.acceleration.z;
+	ay = e.acceleration.y;
+	az = e.acceleration.z;
+	t = performance.now();
+
+	px = (ax*sensitivity) * time;
+	py = (ay*sensitivity) * time;
+	pz = (az*sensitivity) * time;
 }, false);
 
 
@@ -25,8 +49,10 @@ window.addEventListener('deviceorientation', function (e) {
 }, false);
 
 setInterval(function(){
-	popup.innerHTML = '<h1>x: ' + ax + '<br/>y: ' + ay + '<br/>z:' + az + '<br/>alpha:' + al + '<br/>beta:' + be + '<br/>gamma:' + ga +'</h1>';
-},30);
+	popup.innerHTML = '<h1>x: ' + ax + '<br/>y: ' + ay + '<br/>z:' + az + '<br/>alpha:' + al + '<br/>beta:' + be + '<br/>gamma:' + ga +'</h1>' + '<h1>px: ' + px + '<br/>py: ' + py + '<br/>pz:' + pz;
+	
+},1000);
+
 
 window.addEventListener('load', function () {
 	
@@ -41,13 +67,13 @@ window.addEventListener('load', function () {
 	}
 */
 	if (!('ondevicemotion' in window)) {
-		popup.innerHTML = 'Sorry, you need iOS ≥ 4.2 to run this app';
+		popup.innerHTML = 'Sorry, you need a browser with Device Motion Event to run this app';
 		document.getElementById('popup').style.display = 'block';
 		return;
 	}
 	
 	setInterval(function(){
-			socket.emit('update',{id:id, x:ax, y:ay, z: az, a:al, b:be, g:ga});
+			socket.emit('update',{id:id, x:ax, y:ay, z: az, a:al, b:be, g:ga, px: px, py: py, pz: pz});
 		});
 
 }, false);
