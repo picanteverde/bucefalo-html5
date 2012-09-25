@@ -10,8 +10,8 @@ performance.now = (function() {
 
 
 var socket = io.connect(),
-	sensitivity = 0.001,
-	ax,ay, az,
+	sensitivity = 0.01,
+	ax,ay, az, lax = 0, lay = 0, laz = 0, vx = 0 , vy = 0, vz = 0,
 	al,be,ga,
 	px = 0, py = 0, pz = 0, t = performance.now(),
 	id = Math.random();
@@ -30,15 +30,21 @@ window.addEventListener('devicemotion', function (e) {
 	//ay = -e.accelerationIncludingGravity.y;
 	//az = -e.accelerationIncludingGravity.z;
 	var time = (performance.now() - t);
-	time = time *time;
+	time = time * time;
 	ax = e.acceleration.x;
 	ay = e.acceleration.y;
 	az = e.acceleration.z;
 	t = performance.now();
 
-	px = (ax*sensitivity) * time;
-	py = (ay*sensitivity) * time;
-	pz = (az*sensitivity) * time;
+	vx = ((ax - lax)*sensitivity/2) * time;
+	vy = ((ay - lay)*sensitivity/2) * time;
+	vz = ((az - laz)*sensitivity/2) * time;
+	px = ax*sensitivity * time;
+	py = ay*sensitivity * time;
+	pz = az*sensitivity * time;
+	lax = ax;
+	lay = ay;
+	laz = az;
 }, false);
 
 
@@ -53,7 +59,14 @@ setInterval(function(){
 	
 },1000);
 
-
+setInterval(function(){
+	vx = 0;
+	vy = 0;
+	vz = 0;
+	px = 0;
+	py = 0;
+	pz = 0;
+},5000);
 window.addEventListener('load', function () {
 	
 

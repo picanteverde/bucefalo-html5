@@ -127,8 +127,8 @@ var socket = io.connect(),
 		p.update = function(){
 			this.orientation.update();
 			this.motion.update();
-			this.dxy.update(-this.delta.x, this.delta.y, 1);
-			this.dxz.update(this.delta.x, this.delta.z, 1);
+			this.dxy.update(-this.delta.x, this.delta.y, 0.1);
+			this.dxz.update(this.delta.x, this.delta.z, 0.1);
 			this.xy.update(-this.position.x, this.position.y, 0.1);
 			this.xz.update(this.position.x, this.position.z,0.1);
 		};
