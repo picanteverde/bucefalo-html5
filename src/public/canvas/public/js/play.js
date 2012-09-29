@@ -82,8 +82,8 @@
 								dt = this.world.dt,
 								dt2 = dt*dt,
 								s = this.world.s;
-							a.x = -2 * v.x;
-							a.y = -2 * v.y;
+							a.x = -1 * v.x;
+							a.y = -1 * v.y;
 							v.x += a.x * dt;
 							v.y += a.y * dt;
 							p.x += v.x * dt ;
@@ -176,6 +176,10 @@
 						delta.y = win.y - old.y;
 						old.x = win.x;
 						old.y = win.y;
+						win.phy.p.x = win.x;
+						win.phy.p.y = win.y;
+						win.phy.v.x = delta.x/win.phy.world.dt;
+						win.phy.v.y = delta.y/win.phy.world.dt;
 						//win.phy.to.x = ev.stageX + offset.x;
 						//win.phy.to.y = ev.stageY + offset.y;
 						// indicate that the stage should be updated on the next tick:
@@ -210,20 +214,20 @@
 		g.setStrokeStyle(2, 'round', 'round');
 		g.beginStroke('#000');
 		g.beginFill('#00DD00');
-		g.drawRoundRect(0, 0, 300, 40,1);
+		g.drawRoundRect(0, 0, 100, 100,1);
 		g.endFill();
 
-		g1.setStrokeStyle(2, 'round', 'round');
+/*		g1.setStrokeStyle(2, 'round', 'round');
 		g1.beginStroke('#000');
 		g1.beginFill('#FFFFFF');
-		g1.drawRoundRect(0, 0, 300, 200,1);
+		g1.drawRoundRect(0, 0, 100, 100,1);
 		g1.endFill();
-
+*/
 		title.x = title.y = content.x = 0;
 		content.y = 40;
 
 		win.addChild(title);
-		win.addChild(content);
+//		win.addChild(content);
 		
 		addDragAndDrop(title,win);
 		win.x = phy.p.x;
@@ -301,7 +305,7 @@
 						if(w.x < 10){
 							this.send(w, 'left');
 						};
-						if(w.x + 300 > this.w - 10){
+						if(w.x + 100 > this.w - 10){
 							this.send(w, 'right');
 						}
 					}
@@ -325,7 +329,7 @@
 					this.newWindow();
 					socket.on('receive', function(msg){
 						if(msg.from ==='left'){
-							msg.data.p.x = that.w - 311;
+							msg.data.p.x = that.w - 111;
 						}else{
 							msg.data.p.x = 11;
 						}
