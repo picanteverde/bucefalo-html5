@@ -1,8 +1,7 @@
 (function(){
-	var createPhysicWorld = function(options){
+	var createDynWorld = function(options){
 		var world = {
 			dt: options.dt || 1/30,
-			g: options.g === undefined ? 9.81 : options.g,
 			s: options.s || 1,
 			objects:[],
 			objs_update:[],
@@ -29,30 +28,17 @@
 			createObject: function(options){
 				var obj = {
 						world: this,
-						F: options.F || {x: 0, y: 0}, //Force
-						Fs: options.Fs || [],
 						p: options.p || {x: 0, y: 0}, //position
 						v: options.v || {x: 0, y: 0}, //velocity
 						a: options.a || {x: 0, y: 0}, //aceleration
-						m: options.m || 1, //mass
 						r: options.r || -0.7, //restitution
-						c: options.c || '#'+parseInt(Math.random()*100) +parseInt(Math.random()*100)+parseInt(Math.random()*100),
 						o: options.o || {x:0, y:0},
 						getData: function(){
 							return {
 								p: this.p,
 								v: this.v,
 								a: this.a,
-								m: this.m,
 								r: this.r,
-								c: this.c
-							};
-						},
-						getPx: function(){ 
-							var p = this.p;
-							return {
-								x: parseInt(p.x, 10),
-								y: parseInt(p.y, 10)
 							};
 						},
 						reset: function(){
@@ -64,17 +50,8 @@
 						disable: function(){
 							this.world.removeSim(this);
 						},
-						addForce: function(f){
-							if(this.Fs.indexOf(f) === -1){
-								this.Fs.push(f);								
-							}
-							return f;
-						},
-						removeForce: function(f){
-							if(this.Fs.indexOf(f) !== -1){
-								this.Fs.splice(this.Fs.indexOf(f),1);
-							}
-							return f;
+						bounce: function(dir){
+							this.v[dir] = this.v[dir] * this.r;
 						},
 						update: function(){
 							var a = this.a,
@@ -93,55 +70,12 @@
 							o.x = parseInt(p.x, 10);
 							o.y = parseInt(p.y, 10);
 
-						},
-						update1: function(){
-							var F = this.F,
-								Fs = this.Fs,f,
-								i = Fs.length,
-								a = this.a,
-								v = this.v,
-								p = this.p,
-								m = this.m,
-								g = this.world.g,
-								s = this.world.s,
-								dt = this.world.dt,
-								o = this.o;
-
-							F.x = 0;
-							F.y = 0;
-
-							while(i--){
-								f = Fs[i]();
-								F.x += f.x;
-								F.y += f.y;
-							}
-
-							F.x = isNaN(F.x) ? 0 : F.x;
-							F.y = isNaN(F.y) ? 0 : F.y;
-							
-							//inertia
-							F.x += m * (a.x) * 0.1;
-							F.y += m * (a.y) * 0.1;
-
-							a.x = F.x/m;
-							a.y = g + F.y/m;
-							
-							v.x += a.x * dt;
-							v.y += a.y * dt;
-
-							p.x += v.x * dt * s;
-							p.y += v.y * dt * s;
-							
-							o.x = parseInt(p.x, 10);
-							o.y = parseInt(p.y, 10);
 						}
 					};
 				this.objects.push(obj);
 				return obj;
 			}
 		};
-
-
 		return world;
 	};
 
@@ -239,8 +173,6 @@
 		win.x = phy.p.x;
 		win.y = phy.p.y;
 
-		win.text = id;
-
 		stage.addChild(win);
 		return win;
 	};
@@ -326,7 +258,7 @@
 				},
 				send: function(win, direction){
 					var data = win.phy.getData();
-					data.id = win.text;
+					data.id = param['id'];
 					stage.removeChild(win);
 					win.phy.disable();
 
