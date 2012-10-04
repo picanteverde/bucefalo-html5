@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Display</title>
+		<script src="/libs/tquery-bundle.js"></script>
+		<script src="/libs/tquery.checkerboard.js"></script>
+		<script src="/libs/tquery.world.createfog.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/libs/bucefalo-base.js"></script>
+		<script src="js/display.js"></script>
+<script>
+document.addEventListener('keydown', function(event){
+    // if it is keydown on a arrow, prevent default
+    if( event.keyCode >= 37 && event.keyCode <= 40 ){
+        event.preventDefault();
+    }
+}, true);
+</script>
+</head>
+<body style="margin: 0px; padding: 0px; overflow: hidden; ">
+</body>
+</html>
