@@ -55,6 +55,21 @@ io.sockets.on('connection', function (socket) {
 		em.publish(data.event, data);
 	});
 
+	socket.on('send-to', function(data){
+		if(clients[data.to]){
+			clients[data.to].socket.emit('send-to',data);
+		}
+	});
+
+	socket.on('list',function(data){
+		var id,arr = [];
+		for(id in clients){
+			arr.push(id);
+		}
+		arr.now = new Date();
+		clients[data.id].socket.emit('list',arr);
+	});
+
 	socket.on('disconnect', function(){
 		var c, client;
 		for (c in clients){
