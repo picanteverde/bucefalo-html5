@@ -21,8 +21,6 @@ canvas{
 <pre id="ascii"></pre>
 <script>
 window.URL = window.URL || window.webkitURL;
-navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-                          navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
   var onFailSoHard = function(e) {
     console.log('Reeeejected!', e);
@@ -85,7 +83,7 @@ function snapshot() {
   }
 }
 function start (){
-	navigator.getUserMedia({video: true}, function(stream) {
+	navigator.mediaDevices.getUserMedia({video: true}, function(stream) {
 	  video.src = window.URL.createObjectURL(stream);
 	  localMediaStream = stream;
 	}, onFailSoHard);
