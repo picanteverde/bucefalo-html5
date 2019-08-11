@@ -84,7 +84,11 @@ function snapshot() {
 }
 function start (){
 	navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
-	  video.src = window.URL.createObjectURL(stream);
+		try {
+			video.srcObject = stream;
+		} catch (error) {
+			video.src = window.URL.createObjectURL(stream);
+		}
 	  localMediaStream = stream;
 	}).catch(onFailSoHard);
 	interval = setInterval(snapshot, 100);	
