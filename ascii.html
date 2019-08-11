@@ -85,6 +85,9 @@ function snapshot() {
 function start (){
 	navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
 		try {
+			video.setAttribute('autoplay', '');
+			video.setAttribute('muted', '');
+			video.setAttribute('playsinline', '');
 			video.srcObject = stream;
 		} catch (error) {
 			video.src = window.URL.createObjectURL(stream);
