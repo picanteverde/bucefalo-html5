@@ -83,7 +83,7 @@ function snapshot() {
   }
 }
 function start (){
-	navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
+	navigator.mediaDevices.getUserMedia({video: true, audio: false}).then((stream) => {
 		try {
 			video.setAttribute('autoplay', '');
 			video.setAttribute('muted', '');
